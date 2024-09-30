@@ -1,0 +1,29 @@
+version: '3'
+services:
+  restic:
+    build: .
+    container_name: restic_container
+    image: restic_debian
+    stdin_open: true  # Voor interactiviteit
+    tty: true         # Houdt de terminal open
+    volumes:
+      - pgdata:/var/lib/postgresql/data  # Toegang tot de PostgreSQL data
+
+  pagila:
+    image: postgres:16.4
+    container_name: pagila
+    environment:
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_USER: postgres
+      POSTGRES_DB: pagila  # Creëer automatisch de pagila-database
+    volumes:
+      - ./pagila/pagila-schema.sql:/docker-entrypoint-initdb.d/1-pagila-schema.sql  # Schema toevoegen
+      - ./pagila/pagila-data.sql:/docker-entrypoint-initdb.d/2-pagila-data.sql  # Data toevoegen
+      - pgdata:/var/lib/postgresql/data  # Opslag voor de PostgreSQL data
+    expose:
+      - 5432
+    ports:
+      - 5432:5432
+
+volumes:
+  pgdata:
