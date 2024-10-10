@@ -8,6 +8,7 @@ RUN apt-get update && \
     wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
     apt-get update && \
     apt-get install -y restic postgresql-client-16 && \
+    apt-get install -y curl && \
     apt-get clean
 
 COPY backup.sh /usr/local/bin/backup.sh

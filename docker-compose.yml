@@ -12,6 +12,7 @@ services:
     volumes:
       - ./imdb-postgresql:/imdb-postgresql          # Locatie voor de sample database
       - ./backups:/backups               # Locatie voor restic back-ups
+      - ./sql_operations:/sql_operations  # Locatie voor SQL scripts
     depends_on:
       - postgresql
 
