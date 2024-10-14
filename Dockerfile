@@ -9,10 +9,13 @@ RUN apt-get update && \
     apt-get update && \
     apt-get install -y restic postgresql-client-16 && \
     apt-get install -y curl && \
+    apt-get install -y jq && \
     apt-get clean
 
 COPY backup.sh /usr/local/bin/backup.sh
 RUN chmod +x /usr/local/bin/backup.sh
+COPY load_dump.sh /usr/local/bin/load_dump.sh
+RUN chmod +x /usr/local/bin/load_dump.sh
 
 # Voer de shell uit bij het starten van de container
 CMD ["/bin/bash"]
