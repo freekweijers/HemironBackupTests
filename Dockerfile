@@ -1,5 +1,5 @@
 # Gebruik Debian als basisimage
-FROM debian:latest
+FROM debian:bookworm
 
 # Update de package lijst en installeer restic, postgresql-client, python3, kopia en borgbackup
 RUN apt-get update && \
@@ -17,17 +17,17 @@ RUN mkdir -p /etc/apt/keyrings && \
     apt-get update && \
     apt-get install -y kopia
 
-# Install BorgBackup 1.4 via APT (PPA repository)
-RUN apt-get install -y software-properties-common && \
-    add-apt-repository ppa:costamagnagianfranco/borgbackup -y && \
-    apt-get update && \
-    apt-get install -y borgbackup=1.4.*
+# Install BorgBackup 1.4 from the Debian backports
+RUN apt-get update && \
+    apt-get install -y borgbackup
 
 # Copy scripts
 COPY backup.sh /usr/local/bin/backup.sh
 RUN chmod +x /usr/local/bin/backup.sh
 COPY kopia_backup.sh /usr/local/bin/kopia_backup.sh
 RUN chmod +x /usr/local/bin/kopia_backup.sh
+COPY borg_backup.sh /usr/local/bin/borg_backup.sh
+RUN chmod +x /usr/local/bin/borg_backup.sh
 COPY load_dump.sh /usr/local/bin/load_dump.sh
 RUN chmod +x /usr/local/bin/load_dump.sh
 
